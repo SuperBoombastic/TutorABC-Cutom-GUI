@@ -10,17 +10,21 @@ Stability Issues: Scripts can cause browser crashes or web page errors.
 Note: This script does not come with an installation guide. Please ensure you are familiar with the safe and independent installation of Tampermonkey scripts. Always use scripts from trusted sources and manage them responsibly.
 
 Features
--Dark Mode
--Description: Changes the colors of a wide range of elements to create a dark mode.
--Benefit: Makes the UI easier on the eyes, enhancing visual comfort during use.
--Increased Size
--Description: Increases the size of select icons.
--Benefit: Makes icons easier to click and interact with.
--No Highlight
+
+Dark Mode
+	Description: Changes the colors of a wide range of elements to create a dark mode.
+	Benefit: Makes the UI easier on the eyes, enhancing visual comfort during use.
+
+Increased Size
+	Description: Increases the size of select icons.
+	Benefit: Makes icons easier to click and interact with.-No Highlight
+
 Description: Disables highlighting on select elements.
-Benefit: Ensures that clicks register properly without unwanted visual feedback.
+	Benefit: Ensures that clicks register properly without unwanted visual feedback.
+
 Volume Control
-Description: Adds a volume control slider.
-Benefit: Allows users to easily control the volume of audio tracks played in the classroom.
+	Description: Adds a volume control slider.
+	Benefit: Allows users to easily control the volume of audio tracks played in the classroom.
+
 :information_source: Additional Information
 This script is provided as-is, with no guarantees of functionality or support. By downloading and installing this script, you acknowledge the potential risks and agree to use it at your own risk.

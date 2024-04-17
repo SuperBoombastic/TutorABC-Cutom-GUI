@@ -42,9 +42,9 @@
 
         // Clear background images and hide certain elements
         $(".app-side").css("background-image", "url('')");
-        $(".tm-modal-body").hide();
-        $(".tm-modal-root").hide();
-
+       //$(".tm-modal-wrap").hide();
+       // $(".tm-modal-root").hide();
+       // $(".tm-modal-root").hide();
         $(".emoji-section .body, .chat-input-wrapper, .comment, .comment-input").css({
             "background": backgroundColor + " !important"
         });
@@ -95,4 +95,3 @@
         });
     }
 })();
- 

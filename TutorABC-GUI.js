@@ -35,6 +35,7 @@
         // Apply text and background color
         $('.btn-item, .tool-item, .tab-title, .tab-item, .material-note-body, .comment').css("color", textColor);
         $('.comment-input').css("color", backgroundColor);
+        $('.user-name-text').css("color", "white");
         $('.tool-item-icon').css({"width": "30px", "height": "30px", "user-select": "none"});
 
         // Apply background colors more extensively
@@ -44,7 +45,7 @@
         $(".app-side").css("background-image", "url('')");
        //$(".tm-modal-wrap").hide();
        // $(".tm-modal-root").hide();
-       // $(".tm-modal-root").hide();
+        $(".teacher-face-focus").hide();
         $(".emoji-section .body, .chat-input-wrapper, .comment, .comment-input").css({
             "background": backgroundColor + " !important"
         });

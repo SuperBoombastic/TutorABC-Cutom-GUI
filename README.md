@@ -14,9 +14,9 @@ Tampermonkey scripts can significantly modify your web browsing experience. User
 
 ## Features
 
-### Dark Mode
-- **Description:** Changes the colors of a wide range of elements to create a dark mode.
-- **Benefit:** Makes the UI easier on the eyes, enhancing visual comfort during use.
+### Dark/Light Mode Toggle (dark by default)
+- **Description:** Creates and inserts a button that allows the user to toggle between a dark/light mode.
+- **Benefit:** Allows the user to choose their own visual style
 
 ### Increased Size
 - **Description:** Increases the size of select icons.

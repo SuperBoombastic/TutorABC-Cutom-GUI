@@ -10,7 +10,7 @@ Tampermonkey scripts can significantly modify your web browsing experience. User
 - **Privacy Concerns:** Scripts may track your activities without your consent.
 - **Stability Issues:** Scripts can cause browser crashes or web page errors.
 
-**Note:** This script does not come with an installation guide. Please ensure you are familiar with the safe and independent installation of Tampermonkey scripts. Always use scripts from trusted sources and manage them responsibly.
+**Note:** This script does not come with an installation guide. However, installing Tampermonkey scripts is a trivial process. Please ensure you are familiar with the safe and independent installation of Tampermonkey scripts. Always use scripts from trusted sources and manage them responsibly.
 
 ## Features
 

@@ -15,47 +15,24 @@
 (function() {
     'use strict';
 
-    // Initialize modifications when the document is ready
+    let isDarkMode = true; // Default mode is dark
+
     $(document).ready(function() {
         initializeModifications();
         observeDOMChanges();
     });
 
-    // Sets up initial modifications
     function initializeModifications() {
         applyDarkModeStyles();
         appendVolumeSliderToSpecificTools();
+        appendStyleToggleButton();
+        updateToggleButton();
     }
 
-    // Applies dark mode styles to various elements
-    function applyDarkModeStyles() {
-        const textColor = "#b9b9b9";
-        const backgroundColor = "#4b4d50";
-
-        // Apply text and background color
-        $('.btn-item, .tool-item, .tab-title, .tab-item, .material-note-body, .comment').css("color", textColor);
-        $('.comment-input').css("color", backgroundColor);
-        $('.user-name-text').css("color", "white");
-        $('.tool-item-icon').css({"width": "30px", "height": "30px", "user-select": "none"});
-
-        // Apply background colors more extensively
-        $('.body, .emoji-section, .header, .media-wrapper, .header-wrapper, .videolist-content, .vjs-poster, .toolbar-wrapper, .wb-tools, .media-wrapper, .col-resize, .board-sider, .whiteboard, .whiteboard-wrapper, .board-header, .tool-item, .app-container, .tab-wrapper, .tm-popover, .material-note-body, .material-note-header-tab, .avoid-reading-only, .chat-group, .comment, .chat-operation').css('background-color', backgroundColor);
-
-        // Clear background images and hide certain elements
-        $(".app-side").css("background-image", "url('')");
-       //$(".tm-modal-wrap").hide();
-       // $(".tm-modal-root").hide();
-        $(".teacher-face-focus").hide();
-        $(".emoji-section .body, .chat-input-wrapper, .comment, .comment-input").css({
-            "background": backgroundColor + " !important"
-        });
-    }
-
-    // Adds a volume slider to the specified tools area
     function appendVolumeSliderToSpecificTools() {
         if ($('#volumeSliderContainer').length === 0) {
             const sliderHTML = `
-                <div id="volumeSliderContainer">
+                <div id="volumeSliderContainer" style="display: inline-block;">
                     <input id="volumeSlider" type="range" min="0" max="100" value="100" style="width: 80px; vertical-align: middle;">
                     <div id="volumePercent">100%</div>
                 </div>
@@ -65,14 +42,64 @@
         }
     }
 
-    // Updates the volume display and adjusts audio volume
+    function appendStyleToggleButton() {
+        const toggleButtonHTML = `
+            <div id="toggleStyleContainer" style="display: inline-block; margin-left: 20px;">
+                <button id="styleToggleButton" style="border: 1px solid #ccc; border-radius: 8px; padding: 5px 10px; cursor: pointer; transition: background-color 0.3s ease; font-weight: bold;">Light Mode</button>
+            </div>
+        `;
+        $('.board-header .tools').eq(0).append(toggleButtonHTML);
+        $('#styleToggleButton').on('click', function() {
+            toggleStyles();
+            updateToggleButton();
+        });
+    }
+
+    function updateToggleButton() {
+        const button = $('#styleToggleButton');
+        button.text(isDarkMode ? 'Light Mode' : 'Dark Mode');
+        button.css({'background-color': isDarkMode ? '#333' : '#fff', 'color': isDarkMode ? '#bbcbff' : '#333'});
+    }
+
+    function toggleStyles() {
+        if (isDarkMode) {
+            applyLightModeStyles();
+        } else {
+            applyDarkModeStyles();
+        }
+        isDarkMode = !isDarkMode;
+    }
+
+    function applyDarkModeStyles() {
+        const textColor = "#bbcbff"; // Dark mode text color updated
+        const backgroundColor = "#4b4d50";
+        applyStyles(textColor, backgroundColor);
+    }
+
+    function applyLightModeStyles() {
+        const textColor = "#000000";
+        const backgroundColor = "#FFFFFF";
+        applyStyles(textColor, backgroundColor);
+    }
+
+    function applyStyles(textColor, backgroundColor) {
+        $('.btn-item, .tool-item, .tab-title, .tab-item, .material-note-body, .comment').css("color", textColor);
+        $('.comment-input').css("color", textColor);
+        $('.user-name-text').css("color", textColor);
+        $('.tool-item-icon').css({"width": "30px", "height": "30px", "user-select": "none"});
+        $('.body, .emoji-section, .header, .media-wrapper, .header-wrapper, .videolist-content, .vjs-poster, .toolbar-wrapper, .wb-tools, .media-wrapper, .col-resize, .board-sider, .whiteboard, .whiteboard-wrapper, .board-header, .tool-item, .app-container, .tab-wrapper, .tm-popover, .material-note-body, .material-note-header-tab, .avoid-reading-only, .chat-group, .comment, .chat-operation').css('background-color', backgroundColor);
+        $(".teacher-face-focus").hide();
+        $(".emoji-section .body, .chat-input-wrapper, .comment, .comment-input").css({
+            "background": backgroundColor + " !important"
+        });
+    }
+
     function updateVolumeDisplay() {
         const volume = $(this).val();
         $('#volumePercent').text(`${volume}%`);
         adjustAudioVolume(volume);
     }
 
-    // Adjusts audio volume for media elements
     function adjustAudioVolume(volume) {
         const music = document.getElementById("materialAudio");
         if (music) {
@@ -80,12 +107,15 @@
         }
     }
 
-    // Observes DOM changes to reapply modifications as needed
     function observeDOMChanges() {
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 if (mutation.addedNodes && mutation.addedNodes.length > 0) {
-                    applyDarkModeStyles();
+                    if (isDarkMode) {
+                        applyDarkModeStyles();
+                    } else {
+                        applyLightModeStyles();
+                    }
                 }
             });
         });

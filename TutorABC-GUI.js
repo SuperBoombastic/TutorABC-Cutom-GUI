@@ -70,10 +70,10 @@
     // Updates the text on the style toggle button based on the current mode
     function updateToggleButton() {
         const button = $('#styleToggleButton');
-        // Update the button text based on whether it is dark mode or not
-        button.text(isDarkMode ? 'Light Mode' : 'Dark Mode');
-        // Update the button's styling based on the current theme
-        button.css({'background-color': isDarkMode ? '#333' : '#fff', 'color': isDarkMode ? '#bbcbff' : '#333'});
+        // Update the button text based on whether it is not dark mode
+        button.text(isDarkMode ? 'Dark Mode' : 'Light Mode');
+        // Update the button's styling based on the opposite of the current theme
+        button.css({'background-color': !isDarkMode ? '#fff' : '#333', 'color': !isDarkMode ? '#333' : '#bbcbff'});
     }
 
     // Toggle between light and dark styles
@@ -105,8 +105,10 @@
     function applyStyles(textColor, backgroundColor) {
         $('.btn-item, .tool-item, .tab-title, .tab-item, .material-note-body, .comment').css("color", textColor);
         $('.comment-input').css("color", textColor);
+        $('.send-to ').css("color", textColor);
         $('.user-name-text').css("color", textColor);
         $('.tool-item-icon').css({"width": "30px", "height": "30px", "user-select": "none"});
+        $('.volume-wrapper').css({"width": "200px" + " !important"});
         $('.body, .emoji-section, .header, .media-wrapper, .header-wrapper, .videolist-content, .vjs-poster, .toolbar-wrapper, .wb-tools, .media-wrapper, .col-resize, .board-sider, .whiteboard, .whiteboard-wrapper, .board-header, .tool-item, .app-container, .tab-wrapper, .tm-popover, .material-note-body, .material-note-header-tab, .avoid-reading-only, .chat-group, .comment, .chat-operation').css('background-color', backgroundColor);
         $(".teacher-face-focus").hide();
         $(".emoji-section .body, .chat-input-wrapper, .comment, .comment-input").css({
@@ -130,25 +132,25 @@
     }
 
     // Observes changes to the DOM and applies modifications if necessary
-    function observeDOMChanges() {
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                // Check if new nodes were added to the DOM
-                if (mutation.addedNodes && mutation.addedNodes.length > 0) {
-                    // Reapply the appropriate styles based on the current theme
-                    if (isDarkMode) {
-                        applyDarkModeStyles();
-                    } else {
-                        applyLightModeStyles();
-                    }
-                }
-            });
-        });
+//     function observeDOMChanges() {
+//         const observer = new MutationObserver((mutations) => {
+//             mutations.forEach((mutation) => {
+//                 // Check if new nodes were added to the DOM
+//                 if (mutation.addedNodes && mutation.addedNodes.length > 0) {
+//                     // Reapply the appropriate styles based on the current theme
+//                     if (isDarkMode) {
+//                         applyDarkModeStyles();
+//                     } else {
+//                         applyLightModeStyles();
+//                     }
+//                 }
+//             });
+//         });
 
-        // Set up the observer to watch for changes in the child list and subtree of the body element
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-    }
+//         // Set up the observer to watch for changes in the child list and subtree of the body element
+//         observer.observe(document.body, {
+//             childList: true,
+//             subtree: true
+//         });
+//     }
 })();

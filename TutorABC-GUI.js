@@ -102,19 +102,29 @@
     }
 
     // Apply the given text and background color styles to various elements
-    function applyStyles(textColor, backgroundColor) {
-        $('.btn-item, .tool-item, .tab-title, .tab-item, .material-note-body, .comment').css("color", textColor);
-        $('.comment-input').css("color", textColor);
-        $('.send-to ').css("color", textColor);
-        $('.user-name-text').css("color", textColor);
-        $('.tool-item-icon').css({"width": "30px", "height": "30px", "user-select": "none"});
-        $('.volume-wrapper').css({"width": "200px" + " !important"});
-        $('.body, .emoji-section, .header, .media-wrapper, .header-wrapper, .videolist-content, .vjs-poster, .toolbar-wrapper, .wb-tools, .media-wrapper, .col-resize, .board-sider, .whiteboard, .whiteboard-wrapper, .board-header, .tool-item, .app-container, .tab-wrapper, .tm-popover, .material-note-body, .material-note-header-tab, .avoid-reading-only, .chat-group, .comment, .chat-operation').css('background-color', backgroundColor);
-        $(".teacher-face-focus").hide();
-        $(".emoji-section .body, .chat-input-wrapper, .comment, .comment-input").css({
-            "background": backgroundColor + " !important"
-        });
-    }
+function applyStyles(textColor, backgroundColor) {
+    // Apply color properties
+    const colorSelectors = '.btn-item, .tool-item, .tab-title, .tab-item, .material-note-body, .comment, .comment-input, .send-to, .user-name-text';
+    $(colorSelectors).css("color", textColor);
+
+    // Apply specific icon styles
+    $('.tool-item-icon').css({
+        "width": "30px",
+        "height": "30px",
+        "user-select": "none"
+    });
+
+    // Apply width to volume wrapper with important property handled
+    $('.volume-wrapper').css("cssText", "width: 200px !important");
+
+    // Apply background color properties
+    const backgroundSelectors = '.body, .emoji-section, .header, .media-wrapper, .header-wrapper, .videolist-content, .vjs-poster, .toolbar-wrapper, .wb-tools, .media-wrapper, .col-resize, .board-sider, .whiteboard, .whiteboard-wrapper, .board-header, .tool-item, .app-container, .tab-wrapper, .tm-popover, .material-note-body, .material-note-header-tab, .avoid-reading-only, .chat-group, .comment, .chat-operation, .emoji-section .body, .chat-input-wrapper, .comment, .comment-input';
+    $(backgroundSelectors).css("background-color", backgroundColor);
+
+    // Hide elements
+    $(".teacher-face-focus").hide();
+}
+
 
     // Updates the volume display based on the slider's position
     function updateVolumeDisplay() {

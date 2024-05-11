@@ -19,10 +19,13 @@
     let isDarkMode = true; // Default mode is dark
 
     // Executes when the document is fully loaded
-    $(document).ready(function() {
-        initializeModifications(); // Setup initial UI modifications
+$(document).ready(function() {
+    setTimeout(function() {
+        initializeModifications(); // Setup initial UI modifications after a delay
         observeDOMChanges(); // Setup observer to handle DOM changes dynamically
-    });
+    }, 1000); // Delay in milliseconds
+});
+
 
     // Initialize all modifications when the page loads
     function initializeModifications() {
@@ -116,6 +119,9 @@ function applyStyles(textColor, backgroundColor) {
 
     // Apply width to volume wrapper with important property handled
     $('.volume-wrapper').css("cssText", "width: 200px !important");
+    $('.volume-item').css("cssText", "height: 10px !important; width: 100% !important;");
+
+
 
     // Apply background color properties
     const backgroundSelectors = '.body, .emoji-section, .header, .media-wrapper, .header-wrapper, .videolist-content, .vjs-poster, .toolbar-wrapper, .wb-tools, .media-wrapper, .col-resize, .board-sider, .whiteboard, .whiteboard-wrapper, .board-header, .tool-item, .app-container, .tab-wrapper, .tm-popover, .material-note-body, .material-note-header-tab, .avoid-reading-only, .chat-group, .comment, .chat-operation, .emoji-section .body, .chat-input-wrapper, .comment, .comment-input';
@@ -142,25 +148,25 @@ function applyStyles(textColor, backgroundColor) {
     }
 
     // Observes changes to the DOM and applies modifications if necessary
-//     function observeDOMChanges() {
-//         const observer = new MutationObserver((mutations) => {
-//             mutations.forEach((mutation) => {
-//                 // Check if new nodes were added to the DOM
-//                 if (mutation.addedNodes && mutation.addedNodes.length > 0) {
-//                     // Reapply the appropriate styles based on the current theme
-//                     if (isDarkMode) {
-//                         applyDarkModeStyles();
-//                     } else {
-//                         applyLightModeStyles();
-//                     }
-//                 }
-//             });
-//         });
+    function observeDOMChanges() {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                // Check if new nodes were added to the DOM
+                if (mutation.addedNodes && mutation.addedNodes.length > 0) {
+                    // Reapply the appropriate styles based on the current theme
+                    if (isDarkMode) {
+                        applyDarkModeStyles();
+                    } else {
+                        applyLightModeStyles();
+                    }
+                }
+            });
+        });
 
-//         // Set up the observer to watch for changes in the child list and subtree of the body element
-//         observer.observe(document.body, {
-//             childList: true,
-//             subtree: true
-//         });
-//     }
+        // Set up the observer to watch for changes in the child list and subtree of the body element
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
 })();

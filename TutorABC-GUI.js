@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ITUTOR LESSON
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.3
 // @description  Implements custom interface modifications for online teaching platforms.
 // @author       You
 // @grant        GM_addStyle
@@ -15,24 +15,22 @@
 (function() {
     'use strict';
 
-    // Set the default theme of the UI
-    let isDarkMode = true; // Default mode is dark
+    // Set the default color theme
+    let currentColorTheme = 'Dark'; // Default theme is Dark
 
     // Executes when the document is fully loaded
-$(document).ready(function() {
-    setTimeout(function() {
-        initializeModifications(); // Setup initial UI modifications after a delay
-        observeDOMChanges(); // Setup observer to handle DOM changes dynamically
-    }, 1000); // Delay in milliseconds
-});
-
+    $(document).ready(function() {
+        setTimeout(function() {
+            initializeModifications(); // Setup initial UI modifications after a delay
+            observeDOMChanges(); // Setup observer to handle DOM changes dynamically
+        }, 1000); // Delay in milliseconds
+    });
 
     // Initialize all modifications when the page loads
     function initializeModifications() {
-        applyDarkModeStyles(); // Apply dark mode styles initially
+        applyColorThemeStyles(currentColorTheme); // Apply the default theme styles initially
         appendVolumeSliderToSpecificTools(); // Add volume control slider
-        appendStyleToggleButton(); // Add a toggle button for switching themes
-        updateToggleButton(); // Set the initial text for the toggle button
+        appendColorThemeDropdown(); // Add a dropdown for changing themes
     }
 
     // Append a volume slider to specific elements on the page
@@ -53,84 +51,80 @@ $(document).ready(function() {
         }
     }
 
-    // Adds a toggle button to the interface for changing styles
-    function appendStyleToggleButton() {
-        // HTML structure for the style toggle button
-        const toggleButtonHTML = `
-            <div id="toggleStyleContainer" style="display: inline-block; margin-left: 20px;">
-                <button id="styleToggleButton" style="border: 1px solid #ccc; border-radius: 8px; padding: 5px 10px; cursor: pointer; transition: background-color 0.3s ease; font-weight: bold;">Light Mode</button>
+    // Adds a dropdown to the interface for changing color themes
+    function appendColorThemeDropdown() {
+        // HTML structure for the color theme dropdown
+        const dropdownHTML = `
+            <div id="colorThemeContainer" style="display: inline-block; margin-left: 20px;">
+                <select id="colorThemeDropdown" style="border: 1px solid #ccc; border-radius: 8px; padding: 5px; cursor: pointer;">
+                    <option value="Black">Black</option>
+                    <option value="White">White</option>
+                    <option value="DarkGrey">Dark Grey</option>
+                    <option value="LightGrey">Light Grey</option>
+                </select>
             </div>
         `;
-        // Append the button HTML to the first tool in the board header
-        $('.board-header .tools').eq(0).append(toggleButtonHTML);
-        // Attach an event listener to toggle the styles when clicked
-        $('#styleToggleButton').on('click', function() {
-            toggleStyles();
-            updateToggleButton();
+        // Append the dropdown HTML to the first tool in the board header
+        $('.board-header .tools').eq(0).append(dropdownHTML);
+        // Attach an event listener to change the styles when the selected option changes
+        $('#colorThemeDropdown').on('change', function() {
+            currentColorTheme = $(this).val();
+            applyColorThemeStyles(currentColorTheme);
         });
     }
 
-    // Updates the text on the style toggle button based on the current mode
-    function updateToggleButton() {
-        const button = $('#styleToggleButton');
-        // Update the button text based on whether it is not dark mode
-        button.text(isDarkMode ? 'Dark Mode' : 'Light Mode');
-        // Update the button's styling based on the opposite of the current theme
-        button.css({'background-color': !isDarkMode ? '#fff' : '#333', 'color': !isDarkMode ? '#333' : '#bbcbff'});
-    }
-
-    // Toggle between light and dark styles
-    function toggleStyles() {
-        if (isDarkMode) {
-            applyLightModeStyles(); // Apply light mode styles if currently in dark mode
-        } else {
-            applyDarkModeStyles(); // Apply dark mode styles if currently in light mode
+    // Apply styles for the selected color theme
+    function applyColorThemeStyles(theme) {
+        let textColor, backgroundColor;
+        switch (theme) {
+            case 'White':
+                textColor = "#000000";
+                backgroundColor = "#FFFFFF";
+                break;
+            case 'Black':
+                textColor = "#FFFFFF";
+                backgroundColor = "#000000";
+                break;
+            case 'DarkGrey':
+                textColor = "#FFFFFF";
+                backgroundColor = "#212121";
+                break;
+            case 'LightGrey':
+                textColor = "#000000";
+                backgroundColor = "#D3D3D3";
+                break;
+            default:
+                textColor = "#FFFFFF";
+                backgroundColor = "#000000";
+                break;
         }
-        // Toggle the mode
-        isDarkMode = !isDarkMode;
-    }
-
-    // Apply styles for dark mode
-    function applyDarkModeStyles() {
-        const textColor = "#bbcbff"; // Dark mode text color updated
-        const backgroundColor = "#4b4d50"; // Dark mode background color
-        applyStyles(textColor, backgroundColor);
-    }
-
-    // Apply styles for light mode
-    function applyLightModeStyles() {
-        const textColor = "#000000"; // Light mode text color
-        const backgroundColor = "#FFFFFF"; // Light mode background color
         applyStyles(textColor, backgroundColor);
     }
 
     // Apply the given text and background color styles to various elements
-function applyStyles(textColor, backgroundColor) {
-    // Apply color properties
-    const colorSelectors = '.btn-item, .tool-item, .tab-title, .tab-item, .material-note-body, .comment, .comment-input, .send-to, .user-name-text';
-    $(colorSelectors).css("color", textColor);
+    function applyStyles(textColor, backgroundColor) {
+        // Apply color properties
+        const colorSelectors = '.btn-item, .tool-item, .tab-title, .tab-item, .material-note-body, .comment, .comment-input, .send-to, .user-name-text';
+        $(colorSelectors).css("color", textColor);
 
-    // Apply specific icon styles
-    $('.tool-item-icon').css({
-        "width": "30px",
-        "height": "30px",
-        "user-select": "none"
-    });
+        // Apply specific icon styles
+        $('.tool-item-icon').css({
+            "width": "30px",
+            "height": "30px",
+            "user-select": "none"
+        });
 
-    // Apply width to volume wrapper with important property handled
-    $('.volume-wrapper').css("cssText", "width: 200px !important");
-    $('.volume-item').css("cssText", "height: 10px !important; width: 100% !important;");
+        // Apply width to volume wrapper with important property handled
+        $('.volume-wrapper').css("cssText", "width: 100% !important");
+        $('.volume-item').css("cssText", "height: 6px !important; width: 100% !important;");
 
+        // Apply background color properties
+        const backgroundSelectors = '.body, .emoji-section, .header, .media-wrapper, .header-wrapper, .videolist-content, .vjs-poster, .toolbar-wrapper, .wb-tools, .media-wrapper, .col-resize, .board-sider, .whiteboard, .whiteboard-wrapper, .board-header, .tool-item, .app-container, .tab-wrapper, .tm-popover, .material-note-body, .material-note-header-tab, .avoid-reading-only, .chat-group, .comment, .chat-operation, .emoji-section .body, .chat-input-wrapper, .comment, .comment-input';
+        $(backgroundSelectors).css("background-color", backgroundColor);
 
-
-    // Apply background color properties
-    const backgroundSelectors = '.body, .emoji-section, .header, .media-wrapper, .header-wrapper, .videolist-content, .vjs-poster, .toolbar-wrapper, .wb-tools, .media-wrapper, .col-resize, .board-sider, .whiteboard, .whiteboard-wrapper, .board-header, .tool-item, .app-container, .tab-wrapper, .tm-popover, .material-note-body, .material-note-header-tab, .avoid-reading-only, .chat-group, .comment, .chat-operation, .emoji-section .body, .chat-input-wrapper, .comment, .comment-input';
-    $(backgroundSelectors).css("background-color", backgroundColor);
-
-    // Hide elements
-    $(".teacher-face-focus").hide();
-}
-
+        // Hide elements
+        $(".teacher-face-focus").hide();
+    }
 
     // Updates the volume display based on the slider's position
     function updateVolumeDisplay() {
@@ -154,11 +148,7 @@ function applyStyles(textColor, backgroundColor) {
                 // Check if new nodes were added to the DOM
                 if (mutation.addedNodes && mutation.addedNodes.length > 0) {
                     // Reapply the appropriate styles based on the current theme
-                    if (isDarkMode) {
-                        applyDarkModeStyles();
-                    } else {
-                        applyLightModeStyles();
-                    }
+                    applyColorThemeStyles(currentColorTheme);
                 }
             });
         });
